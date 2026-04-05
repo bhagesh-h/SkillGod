@@ -328,7 +328,9 @@ export default function App() {
                 About
               </button>
               <a
-                href="#"
+                href="https://deepwiki.com/bhagesh-h/SkillGod"
+                target="_blank"
+                rel="noopener noreferrer"
                 className={cn(
                   "transition-colors font-medium",
                   theme === 'dark' ? "text-zinc-500 hover:text-zinc-300" : "text-zinc-400 hover:text-zinc-600"
