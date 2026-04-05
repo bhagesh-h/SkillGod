@@ -20,12 +20,14 @@ The ultimate AI agent skill discovery and synthesis engine. SkillGod helps you f
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/yourusername/skillgod.git
    cd skillgod
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
@@ -47,6 +49,7 @@ The app will be available at `http://localhost:3000`.
 ### Troubleshooting Local Setup
 
 If `npm run dev` fails:
+
 1. **Ensure dependencies are installed**: Run `npm install` before starting.
 2. **Check Port 3000**: Make sure no other service is using port 3000.
 3. **Node Version**: Ensure you are using Node.js v18 or higher.
@@ -56,25 +59,17 @@ If `npm run dev` fails:
 ### Production Deployment
 
 1. Build the frontend:
+
    ```bash
    npm run build
    ```
 
 2. Start the production server:
+
    ```bash
    npm start
    ```
 
-## Deployment on Render / Heroku / Vercel
+## Author
 
-### Render
-
-1. Create a new "Web Service".
-2. Connect your GitHub repository.
-3. Set **Build Command** to `npm install && npm run build`.
-4. Set **Start Command** to `npm start`.
-5. Add your environment variables in the Render dashboard.
-
-## License
-
-MIT
+[Bhagesh Hunakunti](https://www.linkedin.com/in/bhagesh-hunakunti/)

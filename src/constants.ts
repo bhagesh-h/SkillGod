@@ -26,6 +26,6 @@ export const APP_METADATA = {
   NAME: "SkillGod",
   DESCRIPTION: "The ultimate AI agent skill discovery and synthesis engine.",
   VERSION: "1.0.0",
-  GITHUB_URL: "https://github.com/yourusername/skillgod",
-  LINKEDIN_URL: "https://linkedin.com/in/yourusername"
+  GITHUB_URL: "https://github.com/bhagesh-h",
+  LINKEDIN_URL: "https://www.linkedin.com/in/bhagesh-hunakunti/"
 };
