@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Logo } from './components/Logo';
 import { AboutModal } from './components/AboutModal';
-import { 
-  Search, 
-  Download, 
-  Globe, 
-  Github, 
+import {
+  Search,
+  Download,
+  Globe,
+  Github,
   Linkedin,
-  Layers, 
-  CheckCircle2, 
-  AlertCircle, 
-  Loader2, 
+  Layers,
+  CheckCircle2,
+  AlertCircle,
+  Loader2,
   ExternalLink,
   ChevronRight,
   ChevronDown,
@@ -89,10 +89,10 @@ export default function App() {
       apiKey: '',
       baseUrl: '',
       discoveryModel: 'gemini-3-flash-preview',
-      synthesisModel: 'gemini-3.1-pro-preview',
-      useGoogleSearch: true,
+      synthesisModel: 'gemini-3-flash-preview',
+      useGoogleSearch: false,
       useUrlContext: true,
-      skillLimit: 10,
+      skillLimit: 5,
       firecrawlToken: ''
     };
   });
@@ -114,7 +114,7 @@ export default function App() {
 
   const validateSettings = () => {
     const { provider, apiKey, baseUrl } = settings;
-    
+
     // Ensure we are NOT using any fallback from process.env
     if (provider === 'Google' && !apiKey.trim()) {
       setError("Please provide a Google API key in Settings. Fallback keys are disabled for security.");
@@ -186,12 +186,12 @@ export default function App() {
     setIsSearching(true);
     setError(null);
     setGeneratedSkill(null);
-    
+
     try {
       const results = await discoverSkills(topic, description, extraUrls, settings);
       const sortedResults = [...results].sort((a, b) => a.name.localeCompare(b.name));
       setDiscoveredSkills(sortedResults);
-      
+
       // If we only have manual skills and there was likely an error (handled in discoverSkills)
       const onlyManual = sortedResults.length > 0 && sortedResults.every(s => s.source === 'user-url');
       if (onlyManual && extraUrls.length > 0) {
@@ -242,7 +242,7 @@ export default function App() {
   };
 
   const toggleSkill = (id: string) => {
-    setDiscoveredSkills(prev => prev.map(s => 
+    setDiscoveredSkills(prev => prev.map(s =>
       s.id === id ? { ...s, selected: !s.selected } : s
     ));
   };
@@ -256,12 +256,12 @@ export default function App() {
 
     const zip = new JSZip();
     const folder = zip.folder("skill");
-    
+
     if (folder) {
       let fileName = "SKILL.md";
       if (platform === 'Claude') fileName = "skill.json";
       if (platform === 'Antigravity') fileName = "manifest.json";
-      
+
       folder.file(fileName, generatedSkill.definition);
       folder.file("README.md", generatedSkill.instructions);
       folder.file("sources.json", JSON.stringify({
@@ -318,7 +318,7 @@ export default function App() {
           </div>
           <div className="flex items-center gap-3 sm:gap-10 text-xs sm:text-sm">
             <div className="flex items-center gap-4 sm:gap-8">
-              <button 
+              <button
                 onClick={() => setIsAboutOpen(true)}
                 className={cn(
                   "transition-colors flex items-center gap-1.5 sm:gap-2 font-medium",
@@ -327,8 +327,8 @@ export default function App() {
               >
                 About
               </button>
-              <a 
-                href="#" 
+              <a
+                href="#"
                 className={cn(
                   "transition-colors font-medium",
                   theme === 'dark' ? "text-zinc-500 hover:text-zinc-300" : "text-zinc-400 hover:text-zinc-600"
@@ -339,7 +339,7 @@ export default function App() {
             </div>
 
             <div className="flex items-center gap-1 sm:gap-2">
-              <button 
+              <button
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                 className={cn(
                   "p-1.5 sm:p-2.5 rounded-lg transition-colors",
@@ -349,7 +349,7 @@ export default function App() {
               >
                 {theme === 'dark' ? <Sun className="w-4 h-4 sm:w-5 h-5" /> : <Moon className="w-4 h-4 sm:w-5 h-5" />}
               </button>
-              <button 
+              <button
                 onClick={() => setIsSettingsOpen(true)}
                 className={cn(
                   "p-1.5 sm:p-2.5 rounded-lg transition-colors",
@@ -366,7 +366,7 @@ export default function App() {
 
       <main className="flex-1 w-full px-4 sm:px-6 py-4 sm:py-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
-          
+
           {/* Left Column: Inputs */}
           <div className="lg:col-span-5 space-y-6">
             <section className="space-y-4">
@@ -380,7 +380,7 @@ export default function App() {
               <form onSubmit={handleSearch} className="space-y-3">
                 <div className="space-y-1.5">
                   <label className="text-sm font-medium text-zinc-500 uppercase tracking-wider">Skill Name</label>
-                  <input 
+                  <input
                     type="text"
                     placeholder="e.g., Legal Document Research Assistant"
                     className="w-full bg-zinc-900/30 border border-zinc-800 rounded-lg px-4 py-3 text-base focus:outline-none focus:ring-1 focus:ring-indigo-500/30 focus:border-indigo-500/50 transition-all placeholder:text-zinc-700"
@@ -391,7 +391,7 @@ export default function App() {
 
                 <div className="space-y-1.5">
                   <label className="text-sm font-medium text-zinc-500 uppercase tracking-wider">Description (Optional)</label>
-                  <textarea 
+                  <textarea
                     placeholder="Describe specific requirements..."
                     className="w-full bg-zinc-900/30 border border-zinc-800 rounded-lg px-4 py-3 text-base focus:outline-none focus:ring-1 focus:ring-indigo-500/30 focus:border-indigo-500/50 transition-all placeholder:text-zinc-700 min-h-[100px] resize-none"
                     value={description}
@@ -399,71 +399,71 @@ export default function App() {
                   />
                 </div>
 
-                  <div className="space-y-1.5">
-                    <label className="text-sm font-medium text-zinc-500 uppercase tracking-wider">Target Platform</label>
-                    <div className="relative">
-                      <button 
-                        type="button"
-                        onClick={() => setIsPlatformOpen(!isPlatformOpen)}
-                        className={cn(
-                          "w-full border rounded-lg px-4 py-3 text-base text-left flex items-center justify-between focus:outline-none focus:ring-1 transition-all",
-                          theme === 'dark' 
-                            ? "bg-zinc-900/30 border-zinc-800 text-zinc-100 focus:ring-indigo-500/30 focus:border-indigo-500/50" 
-                            : "bg-white border-zinc-200 text-zinc-900 focus:ring-indigo-500/20 focus:border-indigo-500/40"
-                        )}
-                      >
-                        {platform}
-                        <ChevronDown className={cn("w-5 h-5 text-zinc-500 transition-transform duration-200", isPlatformOpen && "rotate-180")} />
-                      </button>
-                      
-                      <AnimatePresence>
-                        {isPlatformOpen && (
-                          <>
-                            <div 
-                              className="fixed inset-0 z-[55]" 
-                              onClick={() => setIsPlatformOpen(false)} 
-                            />
-                            <motion.div 
-                              initial={{ opacity: 0, y: -4 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -4 }}
-                              className="absolute z-[60] top-full left-0 right-0 mt-1 bg-zinc-900/95 backdrop-blur-xl border border-zinc-800 rounded-lg overflow-hidden py-1"
-                            >
-                              {PLATFORMS.map(p => (
-                                <button
-                                  key={p}
-                                  type="button"
-                                  onClick={() => {
-                                    setPlatform(p);
-                                    setIsPlatformOpen(false);
-                                  }}
-                                  className={cn(
-                                    "w-full px-3 py-1.5 text-sm text-left transition-colors",
-                                    platform === p ? "text-indigo-400 bg-indigo-500/10" : "text-zinc-400 hover:bg-zinc-800/50 hover:text-zinc-200"
-                                  )}
-                                >
-                                  {p}
-                                </button>
-                              ))}
-                            </motion.div>
-                          </>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-zinc-500 uppercase tracking-wider">Target Platform</label>
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setIsPlatformOpen(!isPlatformOpen)}
+                      className={cn(
+                        "w-full border rounded-lg px-4 py-3 text-base text-left flex items-center justify-between focus:outline-none focus:ring-1 transition-all",
+                        theme === 'dark'
+                          ? "bg-zinc-900/30 border-zinc-800 text-zinc-100 focus:ring-indigo-500/30 focus:border-indigo-500/50"
+                          : "bg-white border-zinc-200 text-zinc-900 focus:ring-indigo-500/20 focus:border-indigo-500/40"
+                      )}
+                    >
+                      {platform}
+                      <ChevronDown className={cn("w-5 h-5 text-zinc-500 transition-transform duration-200", isPlatformOpen && "rotate-180")} />
+                    </button>
 
-                  {platform === 'Custom' && (
-                    <div className="space-y-1.5">
-                      <label className="text-sm font-medium text-zinc-500 uppercase tracking-wider">Target Platform Skill URL</label>
-                      <input 
-                        type="url"
-                        placeholder="https://example.com/skill-docs"
-                        className="w-full bg-zinc-900/30 border border-zinc-800 rounded-lg px-4 py-3 text-base focus:outline-none focus:ring-1 focus:ring-indigo-500/30 focus:border-indigo-500/50 transition-all text-zinc-100 placeholder:text-zinc-700"
-                        value={customReferenceUrl}
-                        onChange={(e) => setCustomReferenceUrl(e.target.value)}
-                      />
-                    </div>
-                  )}
+                    <AnimatePresence>
+                      {isPlatformOpen && (
+                        <>
+                          <div
+                            className="fixed inset-0 z-[55]"
+                            onClick={() => setIsPlatformOpen(false)}
+                          />
+                          <motion.div
+                            initial={{ opacity: 0, y: -4 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -4 }}
+                            className="absolute z-[60] top-full left-0 right-0 mt-1 bg-zinc-900/95 backdrop-blur-xl border border-zinc-800 rounded-lg overflow-hidden py-1"
+                          >
+                            {PLATFORMS.map(p => (
+                              <button
+                                key={p}
+                                type="button"
+                                onClick={() => {
+                                  setPlatform(p);
+                                  setIsPlatformOpen(false);
+                                }}
+                                className={cn(
+                                  "w-full px-3 py-1.5 text-sm text-left transition-colors",
+                                  platform === p ? "text-indigo-400 bg-indigo-500/10" : "text-zinc-400 hover:bg-zinc-800/50 hover:text-zinc-200"
+                                )}
+                              >
+                                {p}
+                              </button>
+                            ))}
+                          </motion.div>
+                        </>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+
+                {platform === 'Custom' && (
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-medium text-zinc-500 uppercase tracking-wider">Target Platform Skill URL</label>
+                    <input
+                      type="url"
+                      placeholder="https://example.com/skill-docs"
+                      className="w-full bg-zinc-900/30 border border-zinc-800 rounded-lg px-4 py-3 text-base focus:outline-none focus:ring-1 focus:ring-indigo-500/30 focus:border-indigo-500/50 transition-all text-zinc-100 placeholder:text-zinc-700"
+                      value={customReferenceUrl}
+                      onChange={(e) => setCustomReferenceUrl(e.target.value)}
+                    />
+                  </div>
+                )}
 
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
@@ -473,21 +473,21 @@ export default function App() {
                     )}
                   </div>
                   <div className="flex gap-2">
-                    <input 
+                    <input
                       type="url"
                       placeholder="https://github.com/..."
                       className="flex-1 bg-zinc-900/30 border border-zinc-800 rounded-lg px-4 py-3 text-base focus:outline-none focus:ring-1 focus:ring-indigo-500/30 focus:border-indigo-500/50 transition-all placeholder:text-zinc-700"
                       value={newUrl}
                       onChange={(e) => setNewUrl(e.target.value)}
                     />
-                    <button 
+                    <button
                       type="button"
                       onClick={handleAddUrl}
                       disabled={!newUrl.trim()}
                       className={cn(
                         "px-6 rounded-lg transition-all",
-                        newUrl.trim() 
-                          ? "bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/20" 
+                        newUrl.trim()
+                          ? "bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/20"
                           : "bg-zinc-800 text-zinc-500 cursor-not-allowed"
                       )}
                     >
@@ -510,7 +510,7 @@ export default function App() {
 
                 <div className="space-y-1.5">
                   <label className="text-sm font-medium text-zinc-500 uppercase tracking-wider">Reference Template (Optional)</label>
-                  <textarea 
+                  <textarea
                     placeholder="Paste a best-practice skill..."
                     className="w-full bg-zinc-900/30 border border-zinc-800 rounded-lg px-4 py-3 text-base focus:outline-none focus:ring-1 focus:ring-indigo-500/30 focus:border-indigo-500/50 transition-all placeholder:text-zinc-700 min-h-[80px] resize-none"
                     value={referenceText}
@@ -518,7 +518,7 @@ export default function App() {
                   />
                 </div>
 
-                <button 
+                <button
                   type="submit"
                   disabled={isSearching || !topic}
                   className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:bg-zinc-900 disabled:text-zinc-600 text-white font-bold py-5 rounded-lg transition-all flex items-center justify-center gap-4 group text-base"
@@ -538,12 +538,12 @@ export default function App() {
 
           {/* Right Column: Results & Synthesis */}
           <div className="lg:col-span-7 space-y-6">
-            
+
             {/* Discovered Skills Section */}
             <section className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <button 
+                  <button
                     onClick={() => setIsDiscoveredExpanded(!isDiscoveredExpanded)}
                     className="flex items-center gap-2 group"
                   >
@@ -561,12 +561,12 @@ export default function App() {
                     )}
                   </button>
                   {discoveredSkills.length > 0 && isDiscoveredExpanded && (
-                    <button 
+                    <button
                       onClick={selectAllSkills}
                       className={cn(
                         "text-sm font-bold uppercase tracking-wider px-4 py-2 rounded border transition-colors",
-                        theme === 'dark' 
-                          ? "border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700" 
+                        theme === 'dark'
+                          ? "border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700"
                           : "border-zinc-200 text-zinc-600 hover:text-zinc-900 hover:border-zinc-300"
                       )}
                     >
@@ -575,7 +575,7 @@ export default function App() {
                   )}
                 </div>
                 {discoveredSkills.length > 0 && (
-                  <button 
+                  <button
                     onClick={handleSynthesize}
                     disabled={isSynthesizing || discoveredSkills.filter(s => s.selected).length === 0}
                     className="bg-indigo-600 hover:bg-indigo-500 text-white text-base font-bold px-8 py-4 rounded-lg transition-all flex items-center gap-4 disabled:bg-zinc-800 disabled:text-zinc-600"
@@ -588,7 +588,7 @@ export default function App() {
 
               <AnimatePresence>
                 {isDiscoveredExpanded && (
-                  <motion.div 
+                  <motion.div
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
@@ -597,7 +597,7 @@ export default function App() {
                     <div className="space-y-2 max-h-[400px] overflow-y-auto pr-1 custom-scrollbar pb-1">
                       <AnimatePresence mode="popLayout">
                         {discoveredSkills.length === 0 && !isSearching && (
-                          <motion.div 
+                          <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             className="border border-dashed border-zinc-800 rounded-xl p-8 text-center space-y-2"
@@ -619,7 +619,7 @@ export default function App() {
                         )}
 
                         {discoveredSkills.map((skill) => (
-                          <motion.div 
+                          <motion.div
                             key={skill.id}
                             initial={{ opacity: 0, y: 5 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -644,9 +644,9 @@ export default function App() {
                                       {skill.source}
                                     </span>
                                     {ensureValidUrl(skill.sourceUrl) && (
-                                      <a 
-                                        href={ensureValidUrl(skill.sourceUrl)} 
-                                        target="_blank" 
+                                      <a
+                                        href={ensureValidUrl(skill.sourceUrl)}
+                                        target="_blank"
                                         rel="noreferrer"
                                         className="text-zinc-600 hover:text-indigo-400 transition-colors"
                                         onClick={(e) => e.stopPropagation()}
@@ -686,13 +686,13 @@ export default function App() {
 
             {/* Generated Skill Preview Section */}
             {generatedSkill && (
-              <motion.section 
+              <motion.section
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="space-y-4 pt-6 border-t border-zinc-800"
               >
                 <div className="flex items-center justify-between">
-                  <button 
+                  <button
                     onClick={() => setIsGeneratedExpanded(!isGeneratedExpanded)}
                     className="flex items-center gap-2 group"
                   >
@@ -709,7 +709,7 @@ export default function App() {
                       <ChevronDown className="w-3.5 h-3.5 text-zinc-600 group-hover:text-zinc-400 transition-colors" />
                     )}
                   </button>
-                  <button 
+                  <button
                     onClick={handleDownloadZip}
                     className="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold px-6 py-3 rounded-lg transition-all flex items-center gap-3"
                   >
@@ -720,7 +720,7 @@ export default function App() {
 
                 <AnimatePresence>
                   {isGeneratedExpanded && (
-                    <motion.div 
+                    <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
@@ -739,7 +739,7 @@ export default function App() {
                             >
                               {tab.charAt(0).toUpperCase() + tab.slice(1)}
                               {activeTab === tab && (
-                                <motion.div 
+                                <motion.div
                                   layoutId="activeTab"
                                   className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-500"
                                 />
@@ -788,13 +788,13 @@ export default function App() {
             {/* Setup Instructions Section */}
             <AnimatePresence>
               {generatedSkill && (
-                <motion.section 
+                <motion.section
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="space-y-4 pt-6 border-t border-zinc-800"
                 >
                   <div className="flex items-center justify-between">
-                    <button 
+                    <button
                       onClick={() => setIsSetupExpanded(!isSetupExpanded)}
                       className="flex items-center gap-2 group"
                     >
@@ -815,7 +815,7 @@ export default function App() {
 
                   <AnimatePresence>
                     {isSetupExpanded && (
-                      <motion.div 
+                      <motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
@@ -852,14 +852,14 @@ export default function App() {
       <AnimatePresence>
         {isSettingsOpen && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsSettingsOpen(false)}
               className="absolute inset-0 bg-black/80 backdrop-blur-sm"
             />
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -879,7 +879,7 @@ export default function App() {
                   <SettingsIcon className="w-4 h-4 sm:w-5 h-5 text-indigo-400" />
                   Engine Settings
                 </h3>
-                <button 
+                <button
                   onClick={() => setIsSettingsOpen(false)}
                   className={cn(
                     "p-1.5 sm:p-2 rounded-md transition-colors",
@@ -894,25 +894,25 @@ export default function App() {
                 <div className="space-y-2">
                   <label className="text-xs font-medium text-zinc-500 uppercase tracking-wider">AI Provider</label>
                   <div className="relative">
-                    <button 
+                    <button
                       type="button"
                       onClick={() => setIsProviderOpen(!isProviderOpen)}
                       className={cn(
                         "w-full border rounded-lg px-4 py-3 text-sm text-left flex items-center justify-between focus:outline-none focus:ring-1 transition-all",
-                        theme === 'dark' 
-                          ? "bg-zinc-950 border-zinc-800 text-zinc-100 focus:ring-indigo-500/30 focus:border-indigo-500/50" 
+                        theme === 'dark'
+                          ? "bg-zinc-950 border-zinc-800 text-zinc-100 focus:ring-indigo-500/30 focus:border-indigo-500/50"
                           : "bg-zinc-50 border-zinc-200 text-zinc-900 focus:ring-indigo-500/20 focus:border-indigo-500/40"
                       )}
                     >
                       {settings.provider}
                       <ChevronDown className={cn("w-4 h-4 text-zinc-500 transition-transform duration-200", isProviderOpen && "rotate-180")} />
                     </button>
-                    
+
                     <AnimatePresence>
                       {isProviderOpen && (
                         <>
                           <div className="fixed inset-0 z-[110]" onClick={() => setIsProviderOpen(false)} />
-                          <motion.div 
+                          <motion.div
                             initial={{ opacity: 0, y: -4 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -4 }}
@@ -926,8 +926,8 @@ export default function App() {
                                 key={p}
                                 type="button"
                                 onClick={() => {
-                                  setSettings({ 
-                                    ...settings, 
+                                  setSettings({
+                                    ...settings,
                                     provider: p,
                                     discoveryModel: DEFAULT_MODELS[p].discovery,
                                     synthesisModel: DEFAULT_MODELS[p].synthesis
@@ -936,8 +936,8 @@ export default function App() {
                                 }}
                                 className={cn(
                                   "w-full px-3 py-1.5 text-sm text-left transition-colors",
-                                  settings.provider === p 
-                                    ? "text-indigo-400 bg-indigo-500/10" 
+                                  settings.provider === p
+                                    ? "text-indigo-400 bg-indigo-500/10"
                                     : theme === 'dark' ? "text-zinc-400 hover:bg-zinc-800/50 hover:text-zinc-200" : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900"
                                 )}
                               >
@@ -961,27 +961,27 @@ export default function App() {
                       <span className={cn(
                         "text-[10px] font-bold px-1.5 py-0.5 rounded",
                         (settings.provider === 'Google' && settings.apiKey.startsWith('AIza')) ||
-                        (settings.provider === 'OpenAI' && settings.apiKey.startsWith('sk-')) ||
-                        (settings.provider === 'Anthropic' && settings.apiKey.startsWith('sk-ant-')) ||
-                        (settings.provider === 'OpenRouter' && settings.apiKey.startsWith('sk-or-'))
+                          (settings.provider === 'OpenAI' && settings.apiKey.startsWith('sk-')) ||
+                          (settings.provider === 'Anthropic' && settings.apiKey.startsWith('sk-ant-')) ||
+                          (settings.provider === 'OpenRouter' && settings.apiKey.startsWith('sk-or-'))
                           ? "text-green-500 bg-green-500/10"
                           : "text-amber-500 bg-amber-500/10"
                       )}>
                         {(settings.provider === 'Google' && settings.apiKey.startsWith('AIza')) ||
-                        (settings.provider === 'OpenAI' && settings.apiKey.startsWith('sk-')) ||
-                        (settings.provider === 'Anthropic' && settings.apiKey.startsWith('sk-ant-')) ||
-                        (settings.provider === 'OpenRouter' && settings.apiKey.startsWith('sk-or-'))
+                          (settings.provider === 'OpenAI' && settings.apiKey.startsWith('sk-')) ||
+                          (settings.provider === 'Anthropic' && settings.apiKey.startsWith('sk-ant-')) ||
+                          (settings.provider === 'OpenRouter' && settings.apiKey.startsWith('sk-or-'))
                           ? "Valid Format" : "Check Format"}
                       </span>
                     )}
                   </label>
-                  <input 
+                  <input
                     type="password"
                     placeholder="Enter your API key..."
                     className={cn(
                       "w-full border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-1 transition-all",
-                      theme === 'dark' 
-                        ? "bg-zinc-950 border-zinc-800 text-zinc-100 placeholder:text-zinc-800 focus:ring-indigo-500/30 focus:border-indigo-500/50" 
+                      theme === 'dark'
+                        ? "bg-zinc-950 border-zinc-800 text-zinc-100 placeholder:text-zinc-800 focus:ring-indigo-500/30 focus:border-indigo-500/50"
                         : "bg-zinc-50 border-zinc-200 text-zinc-900 placeholder:text-zinc-300 focus:ring-indigo-500/20 focus:border-indigo-500/40",
                       settings.apiKey && !(
                         (settings.provider === 'Google' && settings.apiKey.startsWith('AIza')) ||
@@ -1001,7 +1001,7 @@ export default function App() {
                     <span>Discovery Limit</span>
                     <span className="text-indigo-400 font-mono">{settings.skillLimit} skills</span>
                   </label>
-                  <input 
+                  <input
                     type="range"
                     min="1"
                     max="50"
@@ -1023,13 +1023,13 @@ export default function App() {
                 {(settings.provider === 'Ollama' || settings.provider === 'Custom') && (
                   <div className="space-y-2">
                     <label className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Base URL</label>
-                    <input 
+                    <input
                       type="text"
                       placeholder={settings.provider === 'Ollama' ? "http://localhost:11434" : "https://api.example.com"}
                       className={cn(
                         "w-full border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-1 transition-all",
-                        theme === 'dark' 
-                          ? "bg-zinc-950 border-zinc-800 text-zinc-100 focus:ring-indigo-500/30 focus:border-indigo-500/50" 
+                        theme === 'dark'
+                          ? "bg-zinc-950 border-zinc-800 text-zinc-100 focus:ring-indigo-500/30 focus:border-indigo-500/50"
                           : "bg-zinc-50 border-zinc-200 text-zinc-900 focus:ring-indigo-500/20 focus:border-indigo-500/40"
                       )}
                       value={settings.baseUrl}
@@ -1041,12 +1041,12 @@ export default function App() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Discovery Model</label>
-                    <input 
+                    <input
                       type="text"
                       className={cn(
                         "w-full border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-1 transition-all",
-                        theme === 'dark' 
-                          ? "bg-zinc-950 border-zinc-800 text-zinc-100 focus:ring-indigo-500/30 focus:border-indigo-500/50" 
+                        theme === 'dark'
+                          ? "bg-zinc-950 border-zinc-800 text-zinc-100 focus:ring-indigo-500/30 focus:border-indigo-500/50"
                           : "bg-zinc-50 border-zinc-200 text-zinc-900 focus:ring-indigo-500/20 focus:border-indigo-500/40"
                       )}
                       value={settings.discoveryModel}
@@ -1056,12 +1056,12 @@ export default function App() {
                   </div>
                   <div className="space-y-2">
                     <label className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Synthesis Model</label>
-                    <input 
+                    <input
                       type="text"
                       className={cn(
                         "w-full border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-1 transition-all",
-                        theme === 'dark' 
-                          ? "bg-zinc-950 border-zinc-800 text-zinc-100 focus:ring-indigo-500/30 focus:border-indigo-500/50" 
+                        theme === 'dark'
+                          ? "bg-zinc-950 border-zinc-800 text-zinc-100 focus:ring-indigo-500/30 focus:border-indigo-500/50"
                           : "bg-zinc-50 border-zinc-200 text-zinc-900 focus:ring-indigo-500/20 focus:border-indigo-500/40"
                       )}
                       value={settings.synthesisModel}
@@ -1083,13 +1083,13 @@ export default function App() {
                       </span>
                     )}
                   </label>
-                  <input 
+                  <input
                     type="password"
                     placeholder="Enter Firecrawl API Key..."
                     className={cn(
                       "w-full border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-1 transition-all",
-                      theme === 'dark' 
-                        ? "bg-zinc-950 border-zinc-800 text-zinc-100 placeholder:text-zinc-800 focus:ring-indigo-500/30 focus:border-indigo-500/50" 
+                      theme === 'dark'
+                        ? "bg-zinc-950 border-zinc-800 text-zinc-100 placeholder:text-zinc-800 focus:ring-indigo-500/30 focus:border-indigo-500/50"
                         : "bg-zinc-50 border-zinc-200 text-zinc-900 placeholder:text-zinc-300 focus:ring-indigo-500/20 focus:border-indigo-500/40"
                     )}
                     value={settings.firecrawlToken || ''}
@@ -1127,7 +1127,7 @@ export default function App() {
                           )}
                         </div>
                       </div>
-                      <input 
+                      <input
                         type="checkbox"
                         disabled={settings.provider !== 'Google' && !settings.firecrawlToken}
                         className="w-5 h-5 accent-indigo-500"
@@ -1155,7 +1155,7 @@ export default function App() {
                           )}
                         </div>
                       </div>
-                      <input 
+                      <input
                         type="checkbox"
                         className="w-5 h-5 accent-indigo-500"
                         checked={settings.useUrlContext}
@@ -1177,7 +1177,7 @@ export default function App() {
                 "p-4 border-t flex justify-end",
                 theme === 'dark' ? "bg-zinc-950 border-zinc-800" : "bg-zinc-50 border-zinc-100"
               )}>
-                <button 
+                <button
                   onClick={() => setIsSettingsOpen(false)}
                   className="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold px-8 py-3 rounded-lg transition-all"
                 >
@@ -1197,8 +1197,8 @@ export default function App() {
           <span className="font-semibold">© {new Date().getFullYear()} Created by Bhagesh</span>
         </div>
         <div className="flex items-center gap-6 sm:gap-10">
-          <a 
-            href={APP_METADATA.GITHUB_URL} 
+          <a
+            href={APP_METADATA.GITHUB_URL}
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
@@ -1209,8 +1209,8 @@ export default function App() {
             <Github className="w-4 h-4 sm:w-5 h-5" />
             GitHub
           </a>
-          <a 
-            href={APP_METADATA.LINKEDIN_URL} 
+          <a
+            href={APP_METADATA.LINKEDIN_URL}
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
@@ -1224,10 +1224,10 @@ export default function App() {
         </div>
       </footer>
 
-      <AboutModal 
-        isOpen={isAboutOpen} 
-        onClose={() => setIsAboutOpen(false)} 
-        theme={theme} 
+      <AboutModal
+        isOpen={isAboutOpen}
+        onClose={() => setIsAboutOpen(false)}
+        theme={theme}
       />
 
       <style>{`

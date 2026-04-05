@@ -4,11 +4,12 @@ The ultimate AI agent skill discovery and synthesis engine. SkillGod helps you f
 
 ## Features
 
-- **Skill Discovery**: Search across multiple registries (ClawHub, skills.sh, GitHub) for agent capabilities.
-- **Multi-Provider Support**: Use Google Gemini, OpenAI, Anthropic, OpenRouter, or local models via Ollama.
-- **Skill Synthesis**: Combine multiple skills into a single, comprehensive "super-skill".
-- **Platform Optimized**: Generates definitions tailored for specific agent platforms.
-- **Full-Stack Proxy**: Built-in server-side proxy to handle third-party API communication securely.
+- **Skill Discovery & Web Crawling**: Search across registries (ClawHub, skills.sh, GitHub) and seamlessly scrape web documentation via Firecrawl for agent capabilities. You can optionally include custom reference URLs for precision discovery.
+- **Multi-Provider AI Support**: Robust integration with Google Gemini, OpenAI, Anthropic, OpenRouter, and HuggingFace. Enjoy completely localized, privacy-focused workflows with Ollama. Adjust models specifically for rapid search (discovery) or intensive structuring (synthesis).
+- **Advanced Skill Synthesis**: Combine multiple heterogeneous skills into a cohesive, production-ready "super-skill", utilizing dynamic rendering to reflect structuring phases like analyzing and compiling.
+- **Platform Optimized Exports**: Generates and formats definitions precisely customized for target agent platforms, including OpenClaw (`SKILL.md`), Claude (`skill.json`), Antigravity (`manifest.json`), or entirely Custom Platforms with adherence to custom templating.
+- **Full-Stack Proxy Backend**: A built-in, lightweight Express server handles third-party API communication securely, bypassing complex CORS issues while ensuring your API keys remain safe and local.
+- **Beautiful & Responsive UI/UX**: Built with React, Tailwind CSS, & Motion, supporting dark and light themes, seamless transitions, intuitive tab routing, and an interactive markdown viewer for skill exploration. Download results instantly packaged in `.zip` files.
 
 ## Getting Started
 
@@ -22,7 +23,7 @@ The ultimate AI agent skill discovery and synthesis engine. SkillGod helps you f
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/skillgod.git
+   git clone https://github.com/bhagesh-h/skillgod.git
    cd skillgod
    ```
 
