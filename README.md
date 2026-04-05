@@ -1,6 +1,10 @@
+<div align="center">
+  <img src="public/logo.svg" alt="SkillGod Logo" width="120" />
+
 # SkillGod
 
 The ultimate AI agent skill discovery and synthesis engine. SkillGod helps you find, analyze, and combine AI agent skills from various registries into production-ready definitions for platforms like OpenClaw, Claude, and Antigravity.
+</div>
 
 ## Features
 
